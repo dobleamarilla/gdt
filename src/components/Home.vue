@@ -1,16 +1,5 @@
 <template>
   <div class="container-fluid">
-    <div class="row mt-2 mx-auto" style="max-width: 1200px">
-      <div class="col-md-4 ">
-          <button type="button" class="btn w-100 btn-secondary btn-lg">Nuevo teclado</button>
-      </div>
-      <div class="col-md-4 ">
-          <button type="button" class="btn w-100 btn-secondary btn-lg">Modificar teclado</button>
-      </div>
-      <div class="col-md-4 ">
-          <button type="button" class="btn w-100 btn-secondary btn-lg">Eliminar teclado</button>
-      </div>
-    </div>
     <!-- Nuevo teclado editor -->
     <div class="row mt-1 mx-auto" style="max-width: 1200px">
       <div class="col">
@@ -20,8 +9,14 @@
         </div>
 
         <div class="row form-group mt-1">
-          <div class="col pe-0"><button class="btn btn-primary w-100" @click="addMenu()">Crear menú</button></div>
-          <div class="col ps-0" style="margin-left: 10px"><button class="btn btn-primary ms-1 w-100" @click="borrarMenu()">Eliminar menú</button></div>
+          <div class="col pe-0">
+            <button class="btn btn-primary w-100" @click="addMenu()">
+            <i class="bi bi-plus-lg"></i> MENÚ
+            </button></div>
+          <div class="col ps-0" style="margin-left: 10px">
+            <button class="btn btn-primary ms-1 w-100" @click="borrarMenu()">
+              <i class="bi bi-dash-lg"></i> MENÚ
+              </button></div>
         </div>  
       </div>
       <div class="col">
@@ -31,8 +26,14 @@
         </div>
 
         <div class="row form-group mt-1">
-          <div class="col pe-0"><button class="btn btn-info w-100" @click="addSubmenu()">Crear submenú</button></div>
-          <div class="col ps-0"><button class="btn btn-info ms-1 w-100" @click=" borrarSubmenu()">Eliminar submenú</button></div>
+          <div class="col pe-0">
+            <button class="btn btn-info w-100" @click="addSubmenu()">
+              <i class="bi bi-plus-lg"></i> SUBMENÚ
+            </button></div>
+          <div class="col ps-0">
+            <button class="btn btn-info ms-1 w-100" @click=" borrarSubmenu()">
+              <i class="bi bi-dash-lg"></i> SUBMENÚ
+            </button></div>
         </div>        
       </div>
       <div class="col">
@@ -56,9 +57,23 @@
           <label>Artículo</label>
         </div>
         <div class="row form-group mt-1">
-          <div class="col pe-0"><button class="btn btn-primary w-100" @click="addTecla()">Crear tecla</button></div>
-          <div class="col ps-0"><button class="btn btn-primary ms-1 w-100" @click="borrarTecla()">Eliminar tecla</button></div>
+          <div class="col pe-0">
+            <button class="btn btn-primary w-100" @click="addTecla()">
+              <i class="bi bi-plus-lg"></i> TECLA
+            </button></div>
+          <div class="col ps-0">
+            <button class="btn btn-primary ms-1 w-100" @click="borrarTecla()">
+              <i class="bi bi-dash-lg"></i> TECLA
+            </button></div>
         </div>        
+      </div>
+      <div class="col">
+        <div class="btn-group-vertical w-100">
+          <button type="button" class="btn w-100 btn-secondary btn-lg">Nuevo teclado</button>
+          <button type="button" class="btn w-100 btn-secondary btn-lg mt-1">Modificar teclado</button>
+          <button type="button" class="btn w-100 btn-secondary btn-lg mt-1">Eliminar teclado</button>
+          <button type="button" class="btn w-100 btn-secondary btn-lg mt-1">Guardar teclado</button>
+        </div>
       </div>
     </div>
     <!-- MENÚS -->
@@ -246,15 +261,19 @@ export default defineComponent({
       const idArticuloTeclas = Number(editorIdArticuloTeclas.value);
       const colorTeclas = Number(editorColorTeclas.value);
 
-      if (editorDisplaynameTeclas.value.length > 0) {
-        if (!existeCoincidenciaTeclas(editorDisplaynameTeclas.value)) {
-          if (arrayMenus.value[meActivo] != undefined) {
-            if (arrayMenus.value[meActivo].submenus[subActivo] != undefined) {
-              arrayMenus.value[meActivo].submenus[subActivo].teclas.splice(tecActiva, 1, {
+      const arrayMenusCopia = JSON.parse(JSON.stringify(arrayMenus.value)); // Array.from(arrayMenus.value);
+
+
+      if (displayNameTeclas.length > 0) {
+        if (!existeCoincidenciaTeclas(displayNameTeclas)) {
+          if (arrayMenusCopia[meActivo] != undefined) {
+            if (arrayMenusCopia[meActivo].submenus[subActivo] != undefined) {
+              arrayMenusCopia[meActivo].submenus[subActivo].teclas.splice(tecActiva, 1, {
                 displayName: displayNameTeclas,
                 idArticulo: idArticuloTeclas,
                 color: colorTeclas
               });
+              arrayMenus.value = arrayMenusCopia;
             } else {
               alert("Submenú no definido");
             }
